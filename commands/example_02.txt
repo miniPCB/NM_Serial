@@ -1,0 +1,15 @@
+# This is a sample UDP command file
+# Commands are written in hexadecimal format
+
+48656C6C6F20554450        # "Hello UDP" in ASCII
+AABBCCDDEEFF              # Sample hex data
+010203040506              # Another sample command
+48656C6C6F20554450        # "Hello UDP" in ASCII
+AABBCCDDEEFF              # Sample hex data
+010203040506              # Another sample command
+48656C6C6F20554450        # "Hello UDP" in ASCII
+AABBCCDDEEFF              # Sample hex data
+010203040506              # Another sample command
+
+# You can add delays in your script, but they are not needed here
+DEADBEEF                  # More test data

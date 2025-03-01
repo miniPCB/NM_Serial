@@ -1,0 +1,15 @@
+# This is a sample UDP command file
+# Commands are written in hexadecimal format
+
+# "Hello UDP" in ASCII
+48656C6C6F20554450  
+#SCOPE CAPTURE
+# Sample hex data
+AABBCCDDEEFF        
+#SCOPE CAPTURE
+# Another sample command
+010203040506        
+#SCOPE CAPTURE
+# More test data
+DEADBEEF            
+#SCOPE CAPTURE

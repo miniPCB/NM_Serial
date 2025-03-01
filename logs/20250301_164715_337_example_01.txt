@@ -1,0 +1,3 @@
+Sending: b'Hello UDP'
+Triggering Oscilloscope Capture...
+UDP Error: UdpSenderThread.capture_scopeshot() takes 2 positional arguments but 3 were given
