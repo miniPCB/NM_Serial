@@ -134,6 +134,9 @@ class MainWindow(QWidget):
         self.load_files()
         self.file_list.itemSelectionChanged.connect(self.display_selected_file)
         splitter.addWidget(self.file_list)
+        # Command Files Context Menu
+        self.file_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.file_list.customContextMenuRequested.connect(self.show_command_file_context_menu)
 
         # File Content Pane
         self.file_content = QTextEdit()
@@ -203,11 +206,42 @@ class MainWindow(QWidget):
         self.load_log_files()
         self.log_file_list.itemSelectionChanged.connect(self.display_selected_log_file)
         log_splitter.addWidget(self.log_file_list)
+        # Log Files Context Menu
+        self.log_file_list.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.log_file_list.customContextMenuRequested.connect(self.show_log_file_context_menu)
 
         # Log File Content Pane on the right
         self.log_file_content = QTextEdit()
         self.log_file_content.setReadOnly(True)
         log_splitter.addWidget(self.log_file_content)
+
+    def show_command_file_context_menu(self, position):
+        """Show context menu for command files."""
+        selected_item = self.file_list.currentItem()
+        if not selected_item:
+            return
+        file_path = os.path.join(UDP_COMMANDS_DIR, selected_item.text())
+        
+        menu = QMenu()
+        open_folder_action = menu.addAction("Open File Location")
+        action = menu.exec(self.file_list.mapToGlobal(position))
+        
+        if action == open_folder_action:
+            self.open_file_location(file_path)
+
+    def show_log_file_context_menu(self, position):
+        """Show context menu for log files."""
+        selected_item = self.log_file_list.currentItem()
+        if not selected_item:
+            return
+        file_path = os.path.join(LOG_DIR, selected_item.text())
+        
+        menu = QMenu()
+        open_folder_action = menu.addAction("Open File Location")
+        action = menu.exec(self.log_file_list.mapToGlobal(position))
+        
+        if action == open_folder_action:
+            self.open_file_location(file_path)
 
     def show_image_context_menu(self, position):
         """Show context menu for scopeshot images."""
@@ -227,17 +261,15 @@ class MainWindow(QWidget):
         if action == open_folder_action:
             self.open_file_location(image_path)
 
-    def open_file_location(self, image_path):
+    def open_file_location(self, file_path):
         """Open the file location in the system file explorer and highlight the file."""
-        abs_image_path = os.path.abspath(image_path)
-        abs_folder_path = os.path.dirname(abs_image_path)
-
-        print(f"Opening file location: {abs_image_path}")
+        abs_file_path = os.path.abspath(file_path)
+        abs_folder_path = os.path.dirname(abs_file_path)
 
         if sys.platform == "win32":
-            subprocess.run(["explorer", "/select,", abs_image_path], check=False)
+            subprocess.run(["explorer", "/select,", abs_file_path], check=False)
         elif sys.platform == "darwin":
-            subprocess.run(["open", "-R", abs_image_path], check=False)
+            subprocess.run(["open", "-R", abs_file_path], check=False)
         else:
             subprocess.run(["xdg-open", abs_folder_path], check=False)
 
