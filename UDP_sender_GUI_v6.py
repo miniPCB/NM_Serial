@@ -55,7 +55,7 @@ class UdpSenderThread(QThread):
 
     def capture_scopeshot(self, scopeshot_folder):
         """Capture a screenshot from the oscilloscope and save it to the scopeshot folder."""
-        oscilloscope_ip = "192.168.1.100"  # Modify as needed
+        oscilloscope_ip = self.get_scope_ip()  # Retrieve oscilloscope IP from user input
         oscilloscope_resource = f"TCPIP0::{oscilloscope_ip}::INSTR"
         
         try:
@@ -286,6 +286,14 @@ class MainWindow(QWidget):
         self.log_file_content.setReadOnly(True)
         log_splitter.addWidget(self.log_file_content)
 
+    def get_scope_ip(self):
+        """Retrieve the current oscilloscope IP from input field."""
+        return self.scope_ip_input.text()
+    
+    def get_udp_address(self):
+        """Retrieve the current UDP IP and Port from input fields."""
+        return self.udp_ip_input.text(), int(self.udp_port_input.text())
+
     def toggle_password_visibility(self, checked):
         """Toggle password visibility."""
         if checked:
@@ -504,7 +512,8 @@ class MainWindow(QWidget):
             QMessageBox.warning(self, "Warning", "No file selected!")
             return
         filename = os.path.join(UDP_COMMANDS_DIR, selected_item.text())
-        server_address = ('192.168.1.221', 30206)  # Update as needed
+        #server_address = ('192.168.0.11', 5005)  # Update as needed
+        server_address = self.get_udp_address()
         
         self.log_pane.append(f"Sending commands from {filename}")
         self.udp_thread = UdpSenderThread(filename, server_address)

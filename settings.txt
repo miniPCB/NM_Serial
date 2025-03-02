@@ -1,5 +1,5 @@
-udp_ip=192.168.1.221
-udp_port=30206
+udp_ip=192.168.0.11
+udp_port=5005
 scope_ip=192.168.1.100
 scope_username=Administrator
 scope_password=Keysight
