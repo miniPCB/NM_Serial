@@ -48,16 +48,16 @@ class PingThread(QThread):
 class UdpSenderThread(QThread):
     log_signal = pyqtSignal(str)
 
-    def __init__(self, filename, server_address, parent=None):
+    def __init__(self, filename, server_address, scope_ip, parent=None):
         super().__init__(parent)
         self.filename = filename
         self.server_address = server_address
+        self.scope_ip = scope_ip  # Store oscilloscope IP
 
     def capture_scopeshot(self, scopeshot_folder):
         """Capture a screenshot from the oscilloscope and save it to the scopeshot folder."""
-        oscilloscope_ip = self.get_scope_ip()  # Retrieve oscilloscope IP from user input
-        oscilloscope_resource = f"TCPIP0::{oscilloscope_ip}::INSTR"
-        
+        oscilloscope_resource = f"TCPIP0::{self.scope_ip}::INSTR"  # Use passed IP
+
         try:
             rm = pyvisa.ResourceManager()
             oscilloscope = rm.open_resource(oscilloscope_resource)
@@ -512,11 +512,11 @@ class MainWindow(QWidget):
             QMessageBox.warning(self, "Warning", "No file selected!")
             return
         filename = os.path.join(UDP_COMMANDS_DIR, selected_item.text())
-        #server_address = ('192.168.0.11', 5005)  # Update as needed
         server_address = self.get_udp_address()
-        
+        scope_ip = self.get_scope_ip()  # Get scope IP from user input
+
         self.log_pane.append(f"Sending commands from {filename}")
-        self.udp_thread = UdpSenderThread(filename, server_address)
+        self.udp_thread = UdpSenderThread(filename, server_address, scope_ip)  # Pass scope IP
         self.udp_thread.log_signal.connect(self.log_pane.append)
         self.udp_thread.start()
     
