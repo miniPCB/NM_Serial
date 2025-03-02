@@ -1,7 +1,7 @@
 import socket
 
-UDP_IP = "192.168.0.7"  # Listen on all interfaces
-UDP_PORT = 5005      # Choose any port
+UDP_IP = "0.0.0.0"  # Listen on all interfaces
+UDP_PORT = 5005      # Ensure this matches the sender
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((UDP_IP, UDP_PORT))
