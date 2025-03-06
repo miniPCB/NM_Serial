@@ -1,3 +1,0 @@
-Sending: b'Hello UDP'
-Triggering Oscilloscope Capture...
-UDP Error: 'UdpSenderThread' object has no attribute 'get_scope_ip'
