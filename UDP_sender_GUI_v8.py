@@ -7,16 +7,18 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, QLabel, QLineEdit, QPushButton,
     QTreeView, QTextEdit, QSplitter, QMenu
 )
-from PyQt6.QtGui import QFileSystemModel
+from PyQt6.QtGui import QFileSystemModel, QIcon
 from PyQt6.QtCore import Qt, QPoint
 
 SETTINGS_FILE = "settings.json"
 COMMANDS_FOLDER = "commands"
+ICON_FILE = "icon.png"
 
 class UDPTestApp(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("UDP Test GUI")
+        self.setWindowTitle("UDP Testing GUI")
+        self.setWindowIcon(QIcon(ICON_FILE))
         self.resize(800, 600)
 
         self.tabs = QTabWidget()
@@ -179,6 +181,7 @@ if __name__ == "__main__":
         os.makedirs(COMMANDS_FOLDER)
     
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(ICON_FILE))
     window = UDPTestApp()
     window.show()
     sys.exit(app.exec())
